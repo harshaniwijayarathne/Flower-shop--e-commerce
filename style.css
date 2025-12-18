@@ -20,6 +20,10 @@ html{
   overflow-x: hidden;
 }
 
+section{
+  padding:2rem 9%;
+}
+
 header{
   position: fixed;
   top:0; left:0; right:0;
@@ -76,7 +80,14 @@ header .fa-bars{
   display: none;
 }
 
-
+.home{
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  background:url("C:\Users\USER\Desktop\Flower shop\Flower-shop--e-commerce\images\home.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 
 
 
