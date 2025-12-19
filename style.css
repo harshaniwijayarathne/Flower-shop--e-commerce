@@ -259,15 +259,68 @@ header .fa-bars{
   width: 3.5rem;
   height: 3.5rem;
   font-size: 2rem;
-  background: var(--pink);
-  color: #fff;
+  background: #fff;
+  color: #333;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .shop .box-container .box .content .quantity .qty-btn:hover {
-  background: #333;
+  background: var(--pink);
 }
+
+.contact .heading{
+  text-align: center;
+  padding-bottom: 2rem;
+  font-size: 3.5rem;
+  color:#333;
+}
+
+.contact .row{
+  display: flex;
+  flex-wrap: wrap-reverse;
+  gap:1.5rem;
+  align-items: center;
+}
+
+.contact .row form{
+  flex: 1 1 40rem;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1);
+  border: .1rem solid rgba(0,0,0,.1);
+  background: #fff;
+  border-radius: .5rem;
+}
+
+.contact .row .image{
+  flex: 1 1 40rem;
+}
+
+.contact .row .image img{
+  width: 100%;
+}
+
+.contact .row form .box{
+  padding: 1rem;
+  font-size: 1.7rem;
+  color:#333;
+  text-transform: none;
+  border: .1rem solid rgba(0,0,0,.1);
+  border-radius: .5rem;
+  margin: .7rem 0;
+  width: 100%;
+}
+
+.contact .row form .box:focus{
+  border-color: var(--pink);
+}
+
+.contact .row form textarea{
+  height: 15rem;
+  resize: none;
+}
+
+
 
 
 
@@ -288,6 +341,14 @@ header .fa-bars{
   }
   .home{
     background-position: left;
+  }
+  .about {
+    justify-content: center;
+    padding: 4rem 6%;
+  }
+
+  .about-content {
+    max-width: 90%;
   }
 }
 
@@ -324,9 +385,36 @@ header .fa-bars{
   .home .content span{
     font-size: 2.5rem;
   }
+  .about {
+    padding: 3rem 5%;
+  }
+
+  .about-content {
+    padding: 3rem;
+  }
+
+  .about-content h3 {
+    font-size: 3.2rem;
+  }
+
+  .about-content p {
+    font-size: 1.6rem;
+  }
+
 }
   @media (max-width:450px){
   html{
   font-size: 50%;
+  }
+  .about-content {
+    padding: 2.5rem;
+  }
+
+  .about-content h3 {
+    font-size: 2.6rem;
+  }
+
+  .about-content p {
+    font-size: 1.4rem;
   }
 }
