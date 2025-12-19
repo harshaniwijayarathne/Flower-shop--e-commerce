@@ -127,6 +127,36 @@ header .fa-bars{
   line-height:1.5;
 }
 
+.about {
+  display: flex;
+  justify-content: flex-end;  
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 10%;
+  background: url(images/about1.jpg) no-repeat;
+  background-size: cover;
+  background-color: #fff7f9;  
+}
+
+.about .content {
+  max-width: 50rem;
+  text-align: center;       
+}
+
+.about .content h3 {
+  font-size: 4rem;
+  color: #222;
+  margin-bottom: 1.5rem;
+}
+
+.about .content p {
+  font-size: 2rem;
+  color: #444;
+  line-height: 1.7;
+}
+
+
+
 
 
 
