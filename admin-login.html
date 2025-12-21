@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Bloomora</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .admin-login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+
+        .admin-login-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 40rem;
+        }
+
+        .admin-login-form h2 {
+            text-align: center;
+            color: #333;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .admin-login-form .box {
+            width: 100%;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            font-size: 1.6rem;
+            border: .1rem solid #ddd;
+            border-radius: .5rem;
+        }
+
+        .admin-login-form .box:focus {
+            border-color: #667eea;
+        }
+
+        .admin-login-form .btn {
+            width: 100%;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+
+        .admin-login-form p {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1.4rem;
+            color: #666;
+        }
+
+        .admin-login-form a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 1.4rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .admin-note {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 1.3rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="admin-login-form">
+            <h2><i class="fas fa-lock"></i> Admin Login</h2>
+            
+            <div class="admin-note">
+                <p><strong>Note:</strong> This is for authorized personnel only.</p>
+            </div>
+            
+            <form id="adminLoginForm">
+                <input type="text" placeholder="Username" class="box" id="username" required>
+                <div class="error-message" id="usernameError">Invalid username</div>
+                
+                <input type="password" placeholder="Password" class="box" id="password" required>
+                <div class="error-message" id="passwordError">Invalid password</div>
+                
+                <input type="submit" value="Login as Admin" class="btn">
+                
+                <p>
+                    <a href="login.html">← Back to User Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // For demo purposes, using hardcoded credentials
+            // In production, this should be handled by a secure backend
+            if (username === 'admin' && password === 'admin123') {
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                document.getElementById('usernameError').style.display = 'block';
+                document.getElementById('passwordError').style.display = 'block';
+                alert('Invalid credentials! For demo, use: admin / admin123');
+            }
+        });
+    </script>
+</body>
+</html>
