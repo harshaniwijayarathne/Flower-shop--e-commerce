@@ -272,7 +272,7 @@ header .fa-bars{
   font-weight: bolder;
 }
 
-.shop .box-container .box .content.quantity {
+.shop .box-container .box .content .quantity {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -356,51 +356,62 @@ header .fa-bars{
   resize: none;
 }
 
-.footer{
-  background: #FFE9EF;
-  padding: 3rem 9%;
-}
-.footer .box-container{
-  display: flex;
-  flex-wrap: wrap;
-  gap:1.5rem;
+.footer {
+    background: #333;
+    color: #fff;
+    padding: 3rem 9%;
 }
 
-.footer .box-container .box{
-  flex:1 1 25rem;
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
 }
 
-.footer .box-container .box h3{
-  color: #333;
-  font-size: 2.5rem;
-  padding: 1rem 0;
+.footer-box {
+    flex: 1 1 25rem;
 }
 
-.footer .box-container .box a{
-  display: block;
-  color: #666;
-  font-size: 1.5rem;
-  padding: 1rem 0;
+.footer-box h3 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
 }
 
-.footer .box-container .box a:hover{
-  color: var(--pink);
-  text-decoration: underline;
+.footer-box a {
+    display: block;
+    font-size: 1.5rem;
+    color: #ccc;
+    margin-bottom: 1rem;
 }
 
-.footer .box-container .box .iframe{
-    align-items:center ;
-    border: 2px solid black;
+.footer-box a:hover {
+    color: var(--pink);
+    padding-left: 1rem;
 }
 
-.footer .credit{
-  text-align: center;
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-  padding-top: 2.5rem;
-  font-size: 2rem;
-  color:#333;
-  border-top: 1rem solid rgba(0,0,0,.1);
+.footer-box .social-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-box .social-icons a {
+    height: 4rem;
+    width: 4rem;
+    line-height: 4rem;
+    text-align: center;
+    background: #444;
+    border-radius: 50%;
+}
+
+.credit {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #fff;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: .1rem solid #444;
 }
 
 /* Add to existing style.css */
