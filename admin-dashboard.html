@@ -452,31 +452,23 @@
 
             <!-- Users Management -->
             <div id="users" class="content-section">
-                <div class="table-container">
-                    <h2 style="padding: 1.5rem; margin: 0; font-size: 1.8rem;">User Management</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Joined</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><span style="color: #2ecc71;"></span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-container">
+            <h2 style="padding: 1.5rem; margin: 0; font-size: 1.8rem;">User Management</h2>
+            <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Joined</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="usersTable">
+                </tbody>
+            </table>
+            </div>
             </div>
 
             <!-- Orders Management -->
@@ -532,25 +524,59 @@
 
     <script>
     const API_URL = 'http://localhost:8080/api/products';
+    const USER_API_URL = 'http://localhost:8080/api/users';
 
-    // 1. Sidebar navigation (Oyaage thiyena logic ekama thama)
+    // 1. Sidebar Navigation & Global State
     document.querySelectorAll('.sidebar-menu a').forEach(link => {
         link.addEventListener('click', function(e) {
             if (this.getAttribute('href') !== 'index.html') {
                 e.preventDefault();
+                
+                // Active class maru kirima
                 document.querySelectorAll('.sidebar-menu a').forEach(item => item.classList.remove('active'));
                 this.classList.add('active');
+                
+                // Section maru kirima
                 document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
                 const target = this.getAttribute('data-target');
                 document.getElementById(target).classList.add('active');
                 
-                // Products section ekata giyama table eka refresh karanna
+                // Section ekata adala data load kirima
+                if(target === 'users') loadUsers();
                 if(target === 'products') loadProducts();
+                if(target === 'dashboard') loadDashboardStats();
             }
         });
     });
 
-    // 2. READ: Database eken products table ekata load karana hati
+    // 2. READ Users
+    async function loadUsers() {
+        try {
+            const response = await fetch(USER_API_URL);
+            const users = await response.json();
+            const tableBody = document.getElementById('usersTable');
+            tableBody.innerHTML = ''; 
+
+            users.forEach(user => {
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>User ${user.id}</td> 
+                        <td>${user.email}</td>
+                        <td>-</td>
+                        <td>Joined Recently</td>
+                        <td><span style="color: #2ecc71;">Active</span></td>
+                    </tr>`;
+            });
+            
+            // Dashboard eke stat eka update kirima
+            updateStatBadge('Total Users', users.length);
+        } catch (error) {
+            console.error("Users load error:", error);
+        }
+    }
+
+    // 3. READ Products
     async function loadProducts() {
         try {
             const response = await fetch(API_URL);
@@ -567,7 +593,7 @@
                         <td>Rs.${p.price}</td>
                         <td>${p.stock}</td>
                         <td class="action-buttons">
-                            <button class="btn-edit" onclick="openEditModal(${p.id}, '${p.name}', ${p.price}, ${p.stock})">
+                            <button class="btn-edit" onclick="openEditModal(${p.id}, '${p.name}', ${p.price}, ${p.stock}, '${p.imageUrl}')">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button class="btn-delete" onclick="deleteProduct(${p.id})">
@@ -576,14 +602,23 @@
                         </td>
                     </tr>`;
             });
-            // Stats update karanna
-            document.querySelector('.stat-card .number').innerText = products.length;
+            updateStatBadge('Total Products', products.length);
         } catch (error) {
-            console.error("Error loading products:", error);
+            console.error("Products load error:", error);
         }
     }
 
-    // 3. CREATE: Aluth product ekak add karana hati
+    // 4. Stat Badge Update Function
+    function updateStatBadge(title, value) {
+        const cards = document.querySelectorAll('.stat-card');
+        cards.forEach(card => {
+            if(card.querySelector('h3').innerText === title) {
+                card.querySelector('.number').innerText = value;
+            }
+        });
+    }
+
+    // 5. CREATE Product
     document.getElementById('productForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const newProduct = {
@@ -603,14 +638,13 @@
             alert('Flower added successfully!');
             this.reset();
             loadProducts();
-            // Switch back to products list
             document.querySelector('[data-target="products"]').click();
         }
     });
 
-    // 4. DELETE: Product ekak ain karana hati
+    // 6. DELETE Product
     async function deleteProduct(id) {
-        if (confirm('Are you sure you want to delete this product?')) {
+        if (confirm('Are you sure?')) {
             const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
             if (response.ok) {
                 alert('Product deleted!');
@@ -619,12 +653,13 @@
         }
     }
 
-    // 5. UPDATE: Product details edit karana hati
-    function openEditModal(id, name, price, stock) {
+    // 7. UPDATE Product
+    function openEditModal(id, name, price, stock, imageUrl) {
         document.getElementById('editProductId').value = id;
         document.getElementById('editProductName').value = name;
         document.getElementById('editProductPrice').value = price;
         document.getElementById('editProductStock').value = stock;
+        // Image edit karannath field ekak modal ekata add karaganna
         document.getElementById('productModal').style.display = 'block';
     }
 
@@ -654,8 +689,13 @@
         document.getElementById('productModal').style.display = 'none';
     }
 
+    async function loadDashboardStats() {
+        loadProducts();
+        loadUsers();
+    }
+
     // Initial Load
-    window.onload = loadProducts;
+    window.onload = loadDashboardStats;
 </script>
 </body>
 </html>
