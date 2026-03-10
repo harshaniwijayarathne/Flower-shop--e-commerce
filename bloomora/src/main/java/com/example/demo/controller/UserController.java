@@ -19,4 +19,10 @@ public class UserController {
     public List<User> getAllUsers() {
         return userRepository.findAll(); 
     }
+    
+    @PostMapping("/register")
+    @CrossOrigin(origins = "*")
+    public User registerUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
 }
