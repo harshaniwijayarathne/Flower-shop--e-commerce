@@ -129,6 +129,27 @@ header .fa-bars{
   display: none;
 }
 
+.icons .fa-shopping-cart, .icons .fa-heart, .icons .fa-user {
+    font-size: 2.5rem;
+    color: #333;
+    margin-left: 1.5rem;
+    cursor: pointer;
+}
+
+.icons .cart-count {
+    position: absolute;
+    top: -0.8rem;
+    right: -0.8rem;
+    background: var(--pink);
+    color: #fff;
+    font-size: 1.2rem;
+    height: 1.8rem;
+    width: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    border-radius: 50%;
+}
+
 .home{
   display: flex;
   align-items: center;
@@ -414,7 +435,6 @@ header .fa-bars{
     border-top: .1rem solid #444;
 }
 
-/* Add to existing style.css */
 
 /* User dropdown */
 .user-dropdown {

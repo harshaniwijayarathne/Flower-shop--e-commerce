@@ -495,73 +495,9 @@
                     <div class="header-item">Remove</div>
                 </div>
                 
-                <!-- Cart Item 1 -->
-                <div class="cart-item" data-product="Red Roses" data-price="400">
-                    <div class="cart-item-product">
-                        <img src="images/Redroses_940x.jpg" alt="Red Roses" class="cart-item-img">
-                        <div class="cart-item-info">
-                            <h4>Red Roses Bouquet</h4>
-                            <p>12 Fresh Red Roses</p>
-                        </div>
-                    </div>
-                    <div class="cart-item-price">Rs.400.00</div>
-                    <div class="cart-item-quantity">
-                        <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                        <input type="number" value="1" min="1" class="qty-input">
-                        <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <div class="cart-item-total">Rs.400.00</div>
-                    <div class="cart-item-remove">
-                        <button class="remove-btn" onclick="removeCartItem(this)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Cart Item 2 -->
-                <div class="cart-item" data-product="White Lilies" data-price="530">
-                    <div class="cart-item-product">
-                        <img src="images/M2A7701-scaled-e1712330126818_1570x.jpg" alt="White Lilies" class="cart-item-img">
-                        <div class="cart-item-info">
-                            <h4>White Lilies</h4>
-                            <p>Fresh White Lilies Bouquet</p>
-                        </div>
-                    </div>
-                    <div class="cart-item-price">Rs.530.00</div>
-                    <div class="cart-item-quantity">
-                        <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                        <input type="number" value="2" min="1" class="qty-input">
-                        <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <div class="cart-item-total">Rs.1060.00</div>
-                    <div class="cart-item-remove">
-                        <button class="remove-btn" onclick="removeCartItem(this)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Cart Item 3 -->
-                <div class="cart-item" data-product="Green Celosia" data-price="250">
-                    <div class="cart-item-product">
-                        <img src="images/Greencelosia_940x.jpg" alt="Green Celosia" class="cart-item-img">
-                        <div class="cart-item-info">
-                            <h4>Green Celosia</h4>
-                            <p>Unique Green Celosia Flowers</p>
-                        </div>
-                    </div>
-                    <div class="cart-item-price">Rs.250.00</div>
-                    <div class="cart-item-quantity">
-                        <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                        <input type="number" value="1" min="1" class="qty-input">
-                        <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <div class="cart-item-total">Rs.250.00</div>
-                    <div class="cart-item-remove">
-                        <button class="remove-btn" onclick="removeCartItem(this)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+                <div id="cart-items-list"></div>
+
+                <div class="cart-actions">
                 </div>
                 
                 <!-- Cart Actions -->
@@ -675,285 +611,120 @@
     </footer>
 
     <script>
-      // Cart Page Functionality
-    document.addEventListener('DOMContentLoaded', function() {
-    // Load cart from localStorage
-    let cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
-    
-    // Initialize cart
-    if (cart.length === 0) {
-        showEmptyCart();
-    } else {
-        // In a real implementation, you would dynamically generate cart items from cart array
-        updateCartTotals();
-    }
-    
-    // Quantity button handlers
-    document.querySelectorAll('.qty-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const cartItem = this.closest('.cart-item');
-            const input = cartItem.querySelector('.qty-input');
-            const productName = cartItem.dataset.product;
-            const price = parseFloat(cartItem.dataset.price);
-            
-            if (this.classList.contains('plus')) {
-                input.value = parseInt(input.value) + 1;
-            } else if (this.classList.contains('minus') && input.value > 1) {
-                input.value = parseInt(input.value) - 1;
-            }
-            
-            // Update cart in localStorage
-            updateCartQuantity(productName, parseInt(input.value));
-            
-            // Update item total
-            const total = price * parseInt(input.value);
-            cartItem.querySelector('.cart-item-total').textContent = `Rs.${total.toFixed(2)}`;
-            
-            updateCartTotals();
-        });
-    });
-    
-    // Quantity input change handler
-    document.querySelectorAll('.qty-input').forEach(input => {
-        input.addEventListener('change', function() {
-            if (this.value < 1) this.value = 1;
-            
-            const cartItem = this.closest('.cart-item');
-            const productName = cartItem.dataset.product;
-            const price = parseFloat(cartItem.dataset.price);
-            
-            // Update cart in localStorage
-            updateCartQuantity(productName, parseInt(this.value));
-            
-            // Update item total
-            const total = price * parseInt(this.value);
-            cartItem.querySelector('.cart-item-total').textContent = `Rs.${total.toFixed(2)}`;
-            
-            updateCartTotals();
-        });
-    });
-    
-    // Coupon application
-    document.querySelector('.btn-apply').addEventListener('click', function() {
-        const couponInput = document.querySelector('.coupon-input input');
-        const code = couponInput.value.trim();
-        
-        if (code === '') {
-            alert('Please enter a coupon code');
-            return;
-        }
-        
-        if (code === 'BLOOMORA10') {
-            alert('Coupon applied! 10% discount added.');
-            applyCouponDiscount(10);
-            couponInput.value = '';
-        } else if (code === 'BLOOMORA20') {
-            alert('Coupon applied! 20% discount added.');
-            applyCouponDiscount(20);
-            couponInput.value = '';
-        } else {
-            alert('Invalid coupon code');
-        }
-    });
-    
-    // Update cart count in header
+document.addEventListener('DOMContentLoaded', function() {
+    displayCartItems();
     updateCartCount();
 });
 
-// Cart Functions
-function removeCartItem(button) {
-    const cartItem = button.closest('.cart-item');
-    const productName = cartItem.dataset.product;
+function displayCartItems() {
     
-    if (confirm(`Remove ${productName} from cart?`)) {
-        // Remove from localStorage
-        let cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
-        cart = cart.filter(item => item.name !== productName);
-        localStorage.setItem('bloomoraCart', JSON.stringify(cart));
-        
-        // Animate removal
-        cartItem.style.opacity = '0';
-        cartItem.style.transform = 'translateX(-100px)';
-        
-        setTimeout(() => {
-            cartItem.remove();
-            
-            // Check if cart is empty
-            const remainingItems = document.querySelectorAll('.cart-item');
-            if (remainingItems.length === 0) {
-                showEmptyCart();
-            } else {
-                updateCartTotals();
-            }
-            
-            updateCartCount();
-            showNotification(`${productName} removed from cart`);
-        }, 300);
-    }
-}
-
-function clearCart() {
-    if (confirm('Clear all items from cart?')) {
-        // Clear localStorage
-        localStorage.removeItem('bloomoraCart');
-        
-        // Remove all cart items with animation
-        const cartItems = document.querySelectorAll('.cart-item');
-        cartItems.forEach((item, index) => {
-            setTimeout(() => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(-100px)';
-            }, index * 100);
-        });
-        
-        setTimeout(() => {
-            document.querySelector('.cart-items-container').innerHTML = `
-                <div class="cart-header">
-                    <div class="header-item">Product</div>
-                    <div class="header-item">Price</div>
-                    <div class="header-item">Quantity</div>
-                    <div class="header-item">Total</div>
-                    <div class="header-item">Remove</div>
-                </div>
-            `;
-            
-            showEmptyCart();
-            updateCartCount();
-            showNotification('Cart cleared successfully');
-        }, cartItems.length * 100);
-    }
-}
-
-function updateCartQuantity(productName, quantity) {
     let cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
-    const itemIndex = cart.findIndex(item => item.name === productName);
+    const container = document.getElementById('cart-items-list');
+    const cartContainer = document.querySelector('.cart-container');
+    const emptyCartDiv = document.getElementById('emptyCart');
     
-    if (itemIndex > -1) {
-        cart[itemIndex].quantity = quantity;
+    
+    if (cart.length === 0) {
+        if(cartContainer) cartContainer.style.display = 'none';
+        if(emptyCartDiv) emptyCartDiv.style.display = 'block';
+        return;
+    }
+
+    
+    if(cartContainer) cartContainer.style.display = 'flex';
+    if(emptyCartDiv) emptyCartDiv.style.display = 'none';
+    
+    container.innerHTML = ''; 
+    
+    cart.forEach((item, index) => {
+        
+        let priceValue = typeof item.price === 'string' ? parseFloat(item.price.replace(/[^\d.]/g, '')) : item.price;
+        
+        
+        container.innerHTML += `
+            <div class="cart-item" data-index="${index}">
+                <div class="cart-item-product">
+                    <img src="${item.image}" class="cart-item-img" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                    </div>
+                </div>
+                <div class="cart-item-price">Rs.${priceValue.toFixed(2)}</div>
+                <div class="cart-item-quantity">
+                    <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                    <input type="number" value="${item.quantity}" class="qty-input" readonly>
+                    <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                </div>
+                <div class="cart-item-total">Rs.${(priceValue * item.quantity).toFixed(2)}</div>
+                <div class="cart-item-remove">
+                    <button onclick="removeFromCart(${index})" class="remove-btn"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>`;
+    });
+    
+    updateCartTotals();
+}
+
+function changeQty(index, delta) {
+    let cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
+    if (cart[index]) {
+        cart[index].quantity = Math.max(1, parseInt(cart[index].quantity) + delta);
         localStorage.setItem('bloomoraCart', JSON.stringify(cart));
+        displayCartItems();
+        updateCartCount();
+    }
+}
+
+function removeFromCart(index) {
+    let cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
+    if (confirm('Remove this item from cart?')) {
+        cart.splice(index, 1);
+        localStorage.setItem('bloomoraCart', JSON.stringify(cart));
+        displayCartItems();
         updateCartCount();
     }
 }
 
 function updateCartTotals() {
+    let cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
     let subtotal = 0;
-    
-    // Calculate subtotal from displayed items
-    document.querySelectorAll('.cart-item').forEach(item => {
-        const price = parseFloat(item.dataset.price);
-        const quantity = parseInt(item.querySelector('.qty-input').value);
-        subtotal += price * quantity;
+
+    cart.forEach(item => {
+        let priceValue = typeof item.price === 'string' ? parseFloat(item.price.replace(/[^\d.]/g, '')) : item.price;
+        subtotal += priceValue * item.quantity;
     });
+
     
-    // Calculate shipping (free over 2000)
-    let shipping = 200;
-    if (subtotal >= 2000) {
-        shipping = 0;
-        document.querySelector('.summary-note').innerHTML = `
-            <i class="fas fa-check-circle" style="color: #28a745;"></i>
-            <span>Free shipping applied!</span>
-        `;
-    } else {
-        const remaining = 2000 - subtotal;
-        document.querySelector('.summary-note').innerHTML = `
-            <i class="fas fa-info-circle"></i>
-            <span>Add Rs.${remaining.toFixed(2)} more for free shipping</span>
-        `;
-    }
-    
-    // Calculate tax (5%)
-    const tax = subtotal * 0.05;
-    
-    // Calculate total
-    const total = subtotal + shipping + tax;
-    
-    // Update DOM
+    let shipping = subtotal > 2000 || subtotal === 0 ? 0 : 200;
+    let tax = subtotal * 0.05;
+    let total = subtotal + shipping + tax;
+
     document.querySelector('.subtotal').textContent = `Rs.${subtotal.toFixed(2)}`;
     document.querySelector('.shipping').textContent = shipping === 0 ? 'FREE' : `Rs.${shipping.toFixed(2)}`;
     document.querySelector('.tax').textContent = `Rs.${tax.toFixed(2)}`;
     document.querySelector('.summary-total').textContent = `Rs.${total.toFixed(2)}`;
 }
 
-function applyCouponDiscount(percentage) {
-    const subtotalElement = document.querySelector('.subtotal');
-    const subtotal = parseFloat(subtotalElement.textContent.replace('Rs.', ''));
-    const discount = subtotal * (percentage / 100);
-    const newSubtotal = subtotal - discount;
-    
-    // Add discount row if not exists
-    if (!document.querySelector('.discount-row')) {
-        const taxRow = document.querySelector('.tax').closest('.summary-row');
-        taxRow.insertAdjacentHTML('beforebegin', `
-            <div class="summary-row discount-row">
-                <span>Discount (${percentage}%)</span>
-                <span style="color: #28a745;">-Rs.${discount.toFixed(2)}</span>
-            </div>
-        `);
-    } else {
-        document.querySelector('.discount-row span:last-child').textContent = 
-            `-Rs.${discount.toFixed(2)}`;
-        document.querySelector('.discount-row span:first-child').textContent = 
-            `Discount (${percentage}%)`;
-    }
-    
-    subtotalElement.textContent = `Rs.${newSubtotal.toFixed(2)}`;
-    updateCartTotals();
-}
-
-function showEmptyCart() {
-    document.querySelector('.cart-container').style.display = 'none';
-    document.getElementById('emptyCart').style.display = 'block';
-}
-
-function proceedToCheckout() {
-    const cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
-    
-    if (cart.length === 0) {
-        alert('Your cart is empty!');
-        return;
-    }
-    
-    // In a real implementation, you would redirect to checkout page
-    // window.location.href = 'checkout.html';
-    
-    // For now, show a confirmation
-    showNotification('Proceeding to checkout...');
-    
-    // Simulate checkout process
-    setTimeout(() => {
-        alert('Checkout page would open here with:\n1. Delivery address\n2. Payment method\n3. Order confirmation');
-    }, 1000);
-}
-
-// Shared Functions
 function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
-    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    
+    let cart = JSON.parse(localStorage.getItem('bloomoraCart')) || [];
+    let totalItems = cart.reduce((total, item) => total + parseInt(item.quantity), 0);
     document.querySelectorAll('.cart-count').forEach(span => {
         span.textContent = totalItems;
     });
 }
 
-function showNotification(message) {
-    // Similar to profile.js notification function
-    const existing = document.querySelector('.notification');
-    if (existing) existing.remove();
-    
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
+function clearCart() {
+    if (confirm('Are you sure you want to clear your cart?')) {
+        localStorage.removeItem('bloomoraCart');
+        displayCartItems();
+        updateCartCount();
+    }
 }
-    </script>
+
+function proceedToCheckout() {
+    alert('Thank you for your order! Checkout process initiated.');
+}
+</script>
+   
 </body>
 </html>
