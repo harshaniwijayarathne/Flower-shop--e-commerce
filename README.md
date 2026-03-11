@@ -25,7 +25,7 @@
 
 1. **Clone the Repository:**
    ```bash
-   git clone [https://github.com/harshaniwijayarathne/Flower-shop--e-commerce](https://github.com/harshaniwijayarathne/Flower-shop--e-commerce)
+   git clone [https://github.com/harshaniwijayarathne/Flower-shop--e-commerce]
 
 2. **Database Configuration:**
   * Open XAMPP and start Apache and MySQL.
