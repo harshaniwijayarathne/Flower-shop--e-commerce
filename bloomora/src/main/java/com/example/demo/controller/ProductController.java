@@ -27,19 +27,19 @@ public class ProductController {
         this.repository = repository;
     }
 
-    // 1. Read All Products (GET) [cite: 46]
+    // 1. Read All Products (GET)
     @GetMapping
     public List<product> getAllProducts() {
         return repository.findAll();
     }
 
-    // 2. Create Product (POST) [cite: 47]
+    // 2. Create Product (POST)
     @PostMapping
     public product addProduct(@RequestBody product product) {
         return repository.save(product);
     }
 
-    // 3. Update Product (PUT) [cite: 48]
+    // 3. Update Product (PUT) 
     @PutMapping("/{id}")
     public product updateProduct(@PathVariable Long id, @RequestBody product details) {
         product p = repository.findById(id).orElseThrow();
@@ -49,7 +49,7 @@ public class ProductController {
         return repository.save(p);
     }
 
-    // 4. Delete Product (DELETE) [cite: 48]
+    // 4. Delete Product (DELETE)
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         repository.deleteById(id);
